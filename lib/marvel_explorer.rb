@@ -4,5 +4,8 @@ require 'ultron'
 require 'yaml'
 require 'dotenv'
 require 'fileutils'
+require 'date'
+require 'thor'
+require 'git'
 
 require 'marvel_explorer/explorer'

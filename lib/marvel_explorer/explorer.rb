@@ -1,21 +1,18 @@
-require 'date'
-require 'twitter'
-require 'ultron'
-require 'yaml'
-require 'dotenv'
-require 'fileutils'
-
-  Dotenv.load
-
 module MarvelExplorer
   class Explorer
+    attr_accessor :config
+
+    def initialize config_file = "#{ENV['HOME']}/.marvel_explorer/config.yml"
+      @config = YAML.load File.open config_file
+    end
+
     def start_character
       @start_character ||= begin
-        File.open ENV['MARSHAL_FILE'] do |file|
+        File.open @config['MARSHAL_FILE'] do |file|
           Marshal.load file
         end
       rescue
-        Ultron::Characters.find ENV['DEFAULT_ID']
+        Ultron::Characters.find @config['DEFAULT_ID']
       ensure
         true
       end
@@ -47,13 +44,13 @@ module MarvelExplorer
     end
 
     def save
-      File.open ENV['MARSHAL_FILE'], 'w' do |file|
+      File.open @config['MARSHAL_FILE'], 'w' do |file|
         Marshal.dump end_character, file
       end
     end
 
     def yamlise
-      FileUtils.mkdir_p ENV['YAML_DIR']
+      FileUtils.mkdir_p '%s/_data' % @config['JEKYLL_DIR']
 
       [
         'start',
@@ -66,38 +63,65 @@ module MarvelExplorer
           'image' => eval("#{c}_character[:thumbnail]")
         }
 
-        y = File.open '%s/%s.yml' % [
-          ENV['YAML_DIR'],
+        y = File.open '%s/_data/%s.yml' % [
+          @config['JEKYLL_DIR'],
           c
         ], 'w'
         y.write h.to_yaml
         y.close
       end
 
+      s = MarvelExplorer.series(comic[:title])
+
       h = {
         'date' => comic[:dates][0]['date'],
+        'year' => Date.parse(comic[:dates][0]['date']).strftime('%Y'),
         'title' => comic[:title],
+        'issue' => comic[:issueNumber],
+        'series' => {
+          'period' => s[:period],
+          'name' => s[:name]
+        },
         'url' => comic[:urls][0]['url'],
         'image' => comic[:thumbnail]
       }
 
-      y = File.open '%s/comic.yml' % ENV['YAML_DIR'], 'w'
+      y = File.open '%s/_data/comic.yml' % @config['JEKYLL_DIR'], 'w'
       y.write h.to_yaml
       y.close
     end
 
+    def update
+      yamlise
+      save
+    end
+
+    def yamls
+      @yamls ||= begin
+        yamls = {}
+        %w{start end comic}.each do |thing|
+          y = YAML.load File.open '%s/_data/%s.yml' % [
+            @config['JEKYLL_DIR'],
+            thing
+          ]
+          yamls[thing] = y
+        end
+        yamls
+      end
+    end
+
     def tweet_message
       tm = 'In %s, %s appeared in %s of the %s run of %s with %s' % [
-        MarvelExplorer.get_year(comic).to_s,
-        start_character.name,
-        'issue #%s' % comic.issueNumber.to_s,
-        series[:period],
-        series[:name],
-        end_character.name
+        yamls['comic']['year'],
+        yamls['start']['name'],
+        'issue #%s' % yamls['comic']['issue'],
+        yamls['comic']['series']['period'],
+        yamls['comic']['series']['name'],
+        yamls['end']['name']
       ]
 
-      if tm.length > ENV['TWEET_LENGTH'].to_i
-        tm = '%s…' % s[0, ENV['TWEET_LENGTH'].to_i - 1]
+      if tm.length > @config['TWEET_LENGTH'].to_i
+        tm = '%s…' % s[0, @config['TWEET_LENGTH'].to_i - 1]
       end
 
       tm
@@ -105,25 +129,20 @@ module MarvelExplorer
 
     def commit_message
       '%s -> %s -> %s' % [
-        start_character.name,
-        series[:name],
-        end_character.name
+        yamls['start']['name'],
+        yamls['comic']['series']['name'],
+        yamls['end']['name']
       ]
     end
 
-    def self.twitter_client
-      config = {
-        consumer_key:        ENV['TWITTER_CONSUMER_KEY'],
-        consumer_secret:     ENV['TWITTER_CONSUMER_SECRET'],
-        access_token:        ENV['TWITTER_OAUTH_TOKEN'],
-        access_token_secret: ENV['TWITTER_OAUTH_SECRET']
+    def twitter_client
+      twitter_config = {
+        consumer_key:        @config['TWITTER_CONSUMER_KEY'],
+        consumer_secret:     @config['TWITTER_CONSUMER_SECRET'],
+        access_token:        @config['TWITTER_OAUTH_TOKEN'],
+        access_token_secret: @config['TWITTER_OAUTH_SECRET']
       }
-      Twitter::REST::Client.new(config)
-    end
-
-    def series
-      comic.series['name'] =~ /(.*) \((.*)\)/
-      { name: $1, period: $2 }
+      Twitter::REST::Client.new(twitter_config)
     end
 
     def validate_comic
@@ -132,35 +151,33 @@ module MarvelExplorer
       @comic.thumbnail['path'] !~ /not_available/
     end
 
+    def tweet
+      twitter_client.update tweet_message
+    end
+
+    def commit
+      g = Git.open @config['JEKYLL_DIR']
+  #    require 'pry'
+  #    binding.pry
+      g.add '.'
+      g.commit commit_message
+      g.push(g.remote('origin'))
+  #    `cd #{@config['JEKYLL_DIR']} ; git push --force origin master`
+    end
+
+    def publish
+      commit
+    end
   end
 
   def self.get_year comic
     DateTime.parse(comic.dates.select { |d| d['type'] == 'onsaleDate' }[0]['date']).year
   end
-#  def perform
-#    @first = load
-#    @comic = comic @first
-#    @last  = last @comic, @first
-#
-#    @comic.series['name'] =~ /(.*) \((.*)\)/
-#    @series = { name: $1, period: $2 }
-#
-#    yamlise
-#  end
-#
 
-#
-#  def tweet
-
-#    puts @tweet
-#
-#    if @tweet_message.length > TWEET_LENGTH
-#      @tweet_message = '%s…' % s[0, TWEET_LENGTH - 1]
-#    end
-#
-#    puts @tweet_message
-#    twitter_client.update @tweet_message
-#  end
+  def self.series s
+    s =~ /(.*) \((.*)\) #(.*)/
+    { name: $1, period: $2 }
+  end
 end
 
 #marvel = MarvelExplorer.new
