@@ -1,3 +1,9 @@
+[![Dependency Status](http://img.shields.io/gemnasium/marvelexplorer/marvel_explorer.svg)](https://gemnasium.com/marvelexplorer/marvel_explorer)
+[![Code Climate](http://img.shields.io/codeclimate/github/marvelexplorer/marvel_explorer.svg)](https://codeclimate.com/github/marvelexplorer/marvel_explorer)
+[![Gem Version](http://img.shields.io/gem/v/marvel_explorer.svg)](https://rubygems.org/gems/marvel_explorer)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://marvelexplorer.mit-license.org)
+[![Badges](http://img.shields.io/:badges-5/5-ff6799.svg)](https://github.com/badges/badgerbadgerbadger)
+
 # MarvelExplorer
 
 Uses my [Ultron](http://pikesley.org/projects/ultron) gem to wander from character to character through the [Marvel Comics Data](http://developer.marvel.com/) and drive the [Twitter stream](https://twitter.com/marvel_explorer) and the [Website](http://marvelexplorer.github.io/). You need to set some things up in `~/.marvel_explorer/config.yml`:
