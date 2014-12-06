@@ -1,31 +1,37 @@
 # MarvelExplorer
 
-TODO: Write a gem description
+Uses my [Ultron](http://pikesley.org/projects/ultron) gem to wander from character to character through the [Marvel Comics Data](http://developer.marvel.com/) and drive the [Twitter stream](https://twitter.com/marvel_explorer) and the [Website](http://marvelexplorer.github.io/). You need to set some things up in `~/.marvel_explorer/config.yml`:
 
-## Installation
+    TWITTER_CONSUMER_KEY:    a_key
+    TWITTER_CONSUMER_SECRET: a_secret
+    TWITTER_OAUTH_TOKEN:     a_token
+    TWITTER_OAUTH_SECRET:    a_nuvver_secret
 
-Add this line to your application's Gemfile:
+    DEFAULT_ID:   1009351 # Hulk
+    MARSHAL_FILE: /Users/sam/.marvel_explorer/last.character
+    TWEET_LENGTH: 140
 
-```ruby
-gem 'marvel_explorer'
-```
+    JEKYLL_DIR: /Users/sam/Github/Marvel_Explorer/marvelexplorer.github.io/
 
-And then execute:
+You also need some [Ultron configuration](https://github.com/pikesley/ultron/blob/master/README.md) in `~/.ultronrc`:
 
-    $ bundle
+    PUBLIC_KEY: this_r_public_key
+    PRIVATE_KEY: this_one_r_private_key
 
-Or install it yourself as:
+Available commands are:
 
-    $ gem install marvel_explorer
+    marvel_explorer update
 
-## Usage
+Gets the next iteration of '_Character A_ appeared in _Comic_ with _Character B_'. Writes YAML into `JEKYLL_DIR` for use by my [Marvel Explorer Jekyll site](https://github.com/marvelexplorer/marvelexplorer.github.io)
 
-TODO: Write usage instructions here
+    marvel_explorer tweet
 
-## Contributing
+Generates and publishes a [Tweet](https://twitter.com/marvel_explorer)
 
-1. Fork it ( https://github.com/[my-github-username]/marvel_explorer/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+    marvel_explorer publish
+
+Commits and pushes the Jekyll site to Github Pages
+
+    marvel_explorer perform
+
+All three of the above tasks
