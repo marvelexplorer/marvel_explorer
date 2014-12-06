@@ -5,7 +5,7 @@ module MarvelExplorer
     desc 'version', 'Print marvel_explorer version'
     def version
       puts 'marvel_explorer version %s' % [
-        VERSION
+        ::MarvelExplorer::VERSION
       ]
     end
     map %w(-v --version) => :version
