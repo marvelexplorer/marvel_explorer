@@ -1,5 +1,8 @@
-require "marvel_explorer/version"
+require 'date'
+require 'twitter'
+require 'ultron'
+require 'yaml'
+require 'dotenv'
+require 'fileutils'
 
-module MarvelExplorer
-  # Your code goes here...
-end
+require 'marvel_explorer/explorer'
