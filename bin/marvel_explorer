@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'marvel_explorer/cli'
+MarvelExplorer::CLI.start
