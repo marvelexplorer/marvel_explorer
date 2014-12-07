@@ -1,9 +1,12 @@
-TWITTER_CONSUMER_KEY:    kNdKGJC2liCqTLwLa7fN4c0K7
-TWITTER_CONSUMER_SECRET: k19NddeaO9TR6Y0AnHolZIM7aryguFkdBYf0IgfkXVkTYs8OEA
-TWITTER_OAUTH_TOKEN:     2886997847-MY5p00a9AZxFkQhOdSPlISe5daozV1lmfHxbh8e
-TWITTER_OAUTH_SECRET:    eAb86Ig4AuG7G1uUQqPyCGFaxlZ7qVacOA7Py9LoHqr7k
+twitter:
+  consumer:
+    key:    kNdKGJC2liCqTLwLa7fN4c0K7
+    secret: k19NddeaO9TR6Y0AnHolZIM7aryguFkdBYf0IgfkXVkTYs8OEA
+  oauth:
+    token:     2886997847-MY5p00a9AZxFkQhOdSPlISe5daozV1lmfHxbh8e
+    secret:    eAb86Ig4AuG7G1uUQqPyCGFaxlZ7qVacOA7Py9LoHqr7k
 
-DEFAULT_ID:   1009351 # Hulk
-MARSHAL_FILE: spec/fixtures/last.character
-TWEET_LENGTH: 140
-JEKYLL_DIR: 'tmp/'
+default_id:   1009351 # Hulk
+marshal_file: spec/fixtures/last.character
+tweet_length: 140
+jekyll_dir: 'tmp/'
