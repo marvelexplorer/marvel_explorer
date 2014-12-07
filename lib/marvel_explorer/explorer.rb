@@ -178,6 +178,7 @@ module MarvelExplorer
   end
 
   def self.validate_character character
+    character.thumbnail &&
     character.thumbnail['path'] !~ /not_available/
   end
 end
