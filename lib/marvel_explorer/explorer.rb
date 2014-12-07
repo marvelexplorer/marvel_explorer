@@ -35,7 +35,7 @@ module MarvelExplorer
         characters = Ultron::Characters.by_comic comic.id
         end_character = start_character
         # we want a different character for the next iteration, obvs.
-        until end_character.id != start_character.id
+        until end_character.id != start_character.id && MarvelExplorer.validate_character(end_character)
           end_character = characters.sample
         end
 
@@ -157,12 +157,10 @@ module MarvelExplorer
 
     def commit
       g = Git.open @config['JEKYLL_DIR']
-  #    require 'pry'
-  #    binding.pry
+
       g.add '.'
       g.commit commit_message
       g.push(g.remote('origin'))
-  #    `cd #{@config['JEKYLL_DIR']} ; git push --force origin master`
     end
 
     def publish
@@ -178,11 +176,8 @@ module MarvelExplorer
     s =~ /(.*) \((.*)\) #(.*)/
     { name: $1, period: $2 }
   end
+
+  def self.validate_character character
+    character.thumbnail['path'] !~ /not_available/
+  end
 end
-
-#marvel = MarvelExplorer.new
-#marvel.tweet
-
-#message = "#{marvel.tweet_message}"
-
-#`git commit -a -m "#{message}" && git push origin master`
