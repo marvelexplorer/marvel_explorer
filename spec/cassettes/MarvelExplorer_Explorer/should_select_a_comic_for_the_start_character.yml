@@ -10,7 +10,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - 'Ultron v0.1.15: https://rubygems.org/gems/ultron'
+      - 'Ultron v0.2.0: https://rubygems.org/gems/ultron'
   response:
     status:
       code: 200
@@ -23,7 +23,7 @@ http_interactions:
       Content-Length:
       - '9975'
       Date:
-      - Sat, 06 Dec 2014 15:29:52 GMT
+      - Sun, 07 Dec 2014 21:59:47 GMT
       Connection:
       - keep-alive
     body:
