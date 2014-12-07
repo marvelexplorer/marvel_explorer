@@ -12,7 +12,7 @@ module MarvelExplorer
     end
 
     it 'should get the default start character', :vcr do
-      @me.config['MARSHAL_FILE'] = 'not_a_path'
+      @me.config['marshal_file'] = 'not_a_path'
       expect(@me.start_character.name).to eq 'Hulk'
     end
 
@@ -21,14 +21,14 @@ module MarvelExplorer
     end
 
     it 'should select a comic for the start character', :vcr do
-      @me.config['MARSHAL_FILE'] = 'not_a_path'
+      @me.config['marshal_file'] = 'not_a_path'
       stub_request(:get, /gateway.marvel.com\/v1\/public\/characters\/1009351\/comics/)
       .to_return(status: 200, body: File.read('spec/fixtures/hulk_comics.json'))
       expect(@me.comic.title).to eq 'Marvel Double Shot (2003) #2'
     end
 
     it 'should get the end character from the comic', :vcr do
-      @me.config['MARSHAL_FILE'] = 'not_a_path'
+      @me.config['marshal_file'] = 'not_a_path'
       stub_request(:get, /gateway.marvel.com\/v1\/public\/characters\/1009351\/comics/)
       .to_return(status: 200, body: File.read('spec/fixtures/hulk_comics.json'))
       stub_request(:get, /gateway.marvel.com\/v1\/public\/comics\/19843\/characters/)
@@ -42,7 +42,7 @@ module MarvelExplorer
       stub_request(:get, /gateway.marvel.com\/v1\/public\/comics\/19843\/characters/)
       .to_return(status: 200, body: File.read('spec/fixtures/double-shot-characters.json'))
       @me.save
-      f = Marshal.load File.read @me.config['MARSHAL_FILE']
+      f = Marshal.load File.read @me.config['marshal_file']
       expect(f.name).to eq 'Avengers'
     end
 
@@ -55,14 +55,14 @@ module MarvelExplorer
       .to_return(status: 200, body: File.read('spec/fixtures/spider-man.json'))
       @me.save
       @me.yamlise
-      start_yaml = YAML.load File.open '%s/_data/start.yml' % @me.config['JEKYLL_DIR']
+      start_yaml = YAML.load File.open '%s/_data/start.yml' % @me.config['jekyll_dir']
       expect(start_yaml['name']).to eq 'Hulk'
       expect(start_yaml['image']['extension']).to eq 'jpg'
 
-      end_yaml = YAML.load File.open '%s/_data/end.yml' % @me.config['JEKYLL_DIR']
+      end_yaml = YAML.load File.open '%s/_data/end.yml' % @me.config['jekyll_dir']
       expect(end_yaml['url']).to match /marvel.com\/universe/
 
-      comic_yaml = YAML.load File.open '%s/_data/comic.yml' % @me.config['JEKYLL_DIR']
+      comic_yaml = YAML.load File.open '%s/_data/comic.yml' % @me.config['jekyll_dir']
       expect(comic_yaml['date']).to match /2003-02-10/
       expect(comic_yaml['title']).to match /Double Shot/
       expect(comic_yaml['image']['path']).to match /4c3649b0f2abd/

@@ -8,11 +8,11 @@ module MarvelExplorer
 
     def start_character
       @start_character ||= begin
-        File.open @config['MARSHAL_FILE'] do |file|
+        File.open @config['marshal_file'] do |file|
           Marshal.load file
         end
       rescue
-        Ultron::Characters.find @config['DEFAULT_ID']
+        Ultron::Characters.find @config['default_id']
       ensure
         true
       end
@@ -44,13 +44,13 @@ module MarvelExplorer
     end
 
     def save
-      File.open @config['MARSHAL_FILE'], 'w' do |file|
+      File.open @config['marshal_file'], 'w' do |file|
         Marshal.dump end_character, file
       end
     end
 
     def yamlise
-      FileUtils.mkdir_p '%s/_data' % @config['JEKYLL_DIR']
+      FileUtils.mkdir_p '%s/_data' % @config['jekyll_dir']
 
       [
         'start',
@@ -64,7 +64,7 @@ module MarvelExplorer
         }
 
         y = File.open '%s/_data/%s.yml' % [
-          @config['JEKYLL_DIR'],
+          @config['jekyll_dir'],
           c
         ], 'w'
         y.write h.to_yaml
@@ -86,7 +86,7 @@ module MarvelExplorer
         'image' => comic[:thumbnail]
       }
 
-      y = File.open '%s/_data/comic.yml' % @config['JEKYLL_DIR'], 'w'
+      y = File.open '%s/_data/comic.yml' % @config['jekyll_dir'], 'w'
       y.write h.to_yaml
       y.close
     end
@@ -101,7 +101,7 @@ module MarvelExplorer
         yamls = {}
         %w{start end comic}.each do |thing|
           y = YAML.load File.open '%s/_data/%s.yml' % [
-            @config['JEKYLL_DIR'],
+            @config['jekyll_dir'],
             thing
           ]
           yamls[thing] = y
@@ -120,8 +120,8 @@ module MarvelExplorer
         yamls['end']['name']
       ]
 
-      if tm.length > @config['TWEET_LENGTH'].to_i
-        tm = '%s…' % s[0, @config['TWEET_LENGTH'].to_i - 1]
+      if tm.length > @config['tweet_length'].to_i
+        tm = '%s…' % s[0, @config['tweet_length'].to_i - 1]
       end
 
       tm
@@ -137,10 +137,10 @@ module MarvelExplorer
 
     def twitter_client
       twitter_config = {
-        consumer_key:        @config['TWITTER_CONSUMER_KEY'],
-        consumer_secret:     @config['TWITTER_CONSUMER_SECRET'],
-        access_token:        @config['TWITTER_OAUTH_TOKEN'],
-        access_token_secret: @config['TWITTER_OAUTH_SECRET']
+        consumer_key:        @config['twitter']['consumer']['key'],
+        consumer_secret:     @config['twitter']['consumer']['secret'],
+        access_token:        @config['twitter']['oauth']['token'],
+        access_token_secret: @config['twitter']['oauth']['secret']
       }
       Twitter::REST::Client.new(twitter_config)
     end
@@ -156,7 +156,7 @@ module MarvelExplorer
     end
 
     def commit
-      g = Git.open @config['JEKYLL_DIR']
+      g = Git.open @config['jekyll_dir']
 
       g.add '.'
       g.commit commit_message
