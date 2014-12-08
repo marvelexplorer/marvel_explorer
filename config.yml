@@ -6,7 +6,5 @@ twitter:
     token:     2886997847-MY5p00a9AZxFkQhOdSPlISe5daozV1lmfHxbh8e
     secret:    eAb86Ig4AuG7G1uUQqPyCGFaxlZ7qVacOA7Py9LoHqr7k
 
-default_id:   1009351 # Hulk
 marshal_file: spec/fixtures/last.character
-tweet_length: 140
 jekyll_dir: 'tmp/'
