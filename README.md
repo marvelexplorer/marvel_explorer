@@ -16,8 +16,8 @@ Uses my [Ultron](http://pikesley.org/projects/ultron) gem to wander from charact
         token:  a_token
         secret: a_nuvver_secret
 
-    marshal_file: /Users/sam/.marvel_explorer/last.character
-    jekyll_dir:   /Users/sam/Github/Marvel_Explorer/marvelexplorer.github.io/
+    marshal_file: /home/marvelexplorer/.marvel_explorer/last.character
+    jekyll_dir:   /home/marvelexplorer/marvelexplorer.github.io/
 
 You also need some [Ultron configuration](https://github.com/pikesley/ultron/blob/master/README.md) in `~/.ultronrc`:
 
@@ -28,7 +28,7 @@ Available commands are:
 
     marvel_explorer update
 
-Gets the next iteration of '_Character A_ appeared in _Comic_ with _Character B_'. Writes YAML into `JEKYLL_DIR` for use by my [Marvel Explorer Jekyll site](https://github.com/marvelexplorer/marvelexplorer.github.io)
+Gets the next iteration of '_Character A_ appeared in _Comic_ with _Character B_'. Writes YAML into `jekyll_dir` for use by my [Marvel Explorer Jekyll site](https://github.com/marvelexplorer/marvelexplorer.github.io)
 
     marvel_explorer tweet
 
