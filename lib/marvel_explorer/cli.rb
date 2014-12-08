@@ -35,7 +35,7 @@ module MarvelExplorer
     method_option :commits,
                   type: :numeric,
                   default: 96,
-                  desc: 'How many commits to rank over',
+                  desc: 'How many commits to rank over; 96 is 24 hours, 672 is 7 days',
                   aliases: '-c'
     method_option :limit,
                   type: :numeric,
