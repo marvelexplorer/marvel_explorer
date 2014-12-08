@@ -31,6 +31,13 @@ module MarvelExplorer
     end
     map %w(-p --publish) => :publish
 
+    desc 'ranking', 'Show the most popular characters'
+    def ranking
+      @me = Explorer.new
+      @me.ranking
+    end
+    map %w(-r --ranking) => :ranking
+
     desc 'perform', 'Update, publish and tweet'
     def perform
       @me = Explorer.new
