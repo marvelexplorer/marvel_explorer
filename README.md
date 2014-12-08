@@ -38,6 +38,10 @@ Generates and publishes a [Tweet](https://twitter.com/marvel_explorer)
 
 Commits and pushes the Jekyll site to Github Pages
 
+    marvel_explorer ranking
+
+Calculates most-featured-characters data, writes YAML for Jekyll site
+
     marvel_explorer perform
 
 All three of the above tasks
