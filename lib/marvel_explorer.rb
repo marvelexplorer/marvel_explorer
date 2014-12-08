@@ -9,3 +9,4 @@ require 'thor'
 require 'git'
 
 require 'marvel_explorer/explorer'
+require 'marvel_explorer/version'
