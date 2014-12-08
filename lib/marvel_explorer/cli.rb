@@ -31,7 +31,7 @@ module MarvelExplorer
     end
     map %w(-p --publish) => :publish
 
-    desc 'ranking', 'Show the most popular characters'
+    desc 'ranking', 'Calculate the most-featured-characters data'
     method_option :commits,
                   type: :numeric,
                   default: 96,
