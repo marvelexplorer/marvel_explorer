@@ -89,5 +89,28 @@ module MarvelExplorer
       c = Ultron::Comics.find '50372'
       expect(MarvelExplorer.get_year c).to eq 2014
     end
+
+    it 'should rank correctly', :vcr do
+      repopath = 'tmp/marvelexplorer'
+      FileUtils.rm_rf repopath
+      g = Git.clone 'https://github.com/marvelexplorer/marvelexplorer.github.io', repopath
+      g.checkout 'af8bdcbda93eabb4c1c3eb989e4c9ad4a3d78539'
+
+      expect(@me.ranking repo: repopath).to eq [
+        ["Spider-Man", 13],
+        ["X-Men", 13],
+        ["Wolverine", 6],
+        ["Fantastic Four", 5],
+        ["Beast", 4]
+      ]
+
+      expect(@me.ranking repo: repopath, commits: 96).to eq [
+        ["X-Men", 6],
+        ["Spider-Man", 5],
+        ["Colossus", 3],
+        ["Fantastic Four", 3],
+        ["Wolverine", 3]
+        ]    
+    end
   end
 end
