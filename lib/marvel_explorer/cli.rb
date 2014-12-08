@@ -32,9 +32,20 @@ module MarvelExplorer
     map %w(-p --publish) => :publish
 
     desc 'ranking', 'Show the most popular characters'
+    method_option :commits,
+                  type: :numeric,
+                  default: 96,
+                  desc: 'How many commits to rank over',
+                  aliases: '-c'
+    method_option :limit,
+                  type: :numeric,
+                  default: 5,
+                  desc: 'Get top N rankings',
+                  aliases: '-l'
+
     def ranking
       @me = Explorer.new
-      @me.ranking
+      @me.record_rankings commits: options[:commits], limit: options[:limit]
     end
     map %w(-r --ranking) => :ranking
 
