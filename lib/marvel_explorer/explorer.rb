@@ -167,7 +167,7 @@ module MarvelExplorer
       commit
     end
 
-    def ranking params
+    def calculate_rankings params
       params = { commits: 35040, repo: @config['jekyll_dir'], limit: 5 }.merge params
       g = Git.open params[:repo]
 
@@ -182,13 +182,13 @@ module MarvelExplorer
       .map { |k, v| { 'name' => k, 'score' => v } }[0...params[:limit]]
     end
 
-    def record_rankings params = {}
+    def rankings params = {}
       y = File.open '%s/_data/rankings_%d.yml' % [
         @config['jekyll_dir'],
         params[:commits],
       ], 'w'
 
-      y.write ranking(params).to_yaml
+      y.write calculate_rankings(params).to_yaml
       y.close
     end
   end

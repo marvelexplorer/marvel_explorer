@@ -14,7 +14,7 @@ module MarvelExplorer
     end
 
     it 'should rank correctly', :vcr do
-      expect(@me.ranking repo: @repopath).to eq [
+      expect(@me.calculate_rankings repo: @repopath).to eq [
         { 'name' => 'Spider-Man', 'score' => 13 },
         { 'name' => 'X-Men', 'score' => 13 },
         { 'name' => 'Wolverine', 'score' => 6 },
@@ -22,7 +22,7 @@ module MarvelExplorer
         { 'name' => 'Beast', 'score' => 4 }
       ]
 
-      expect(@me.ranking repo: @repopath, commits: 96).to eq [
+      expect(@me.calculate_rankings repo: @repopath, commits: 96).to eq [
         { 'name' => 'X-Men', 'score' => 6 },
         { 'name' => 'Spider-Man', 'score' => 5 },
         { 'name' => 'Colossus', 'score' => 3 },
@@ -30,11 +30,11 @@ module MarvelExplorer
         { 'name' => 'Wolverine', 'score' => 3 }
       ]
 
-      expect(@me.ranking repo: @repopath, commits: 1). to eq [
+      expect(@me.calculate_rankings repo: @repopath, commits: 1). to eq [
         { 'name' => 'Cable', 'score' => 1 }
       ]
 
-      expect(@me.ranking repo: @repopath, commits: 672, limit: 10). to eq [
+      expect(@me.calculate_rankings repo: @repopath, commits: 672, limit: 10). to eq [
         { 'name' => 'Spider-Man', 'score' => 13 },
         { 'name' => 'X-Men', 'score' => 13 },
         { 'name' => 'Wolverine', 'score' => 6 },
@@ -49,7 +49,7 @@ module MarvelExplorer
     end
 
     it 'should write ranking yaml', :vcr do
-      @me.record_rankings repo: @repopath, commits: 96
+      @me.rankings repo: @repopath, commits: 96
       yaml = YAML.load File.read '%s/_data/rankings_96.yml' % @me.config['jekyll_dir']
       expect(yaml[0]['name']).to eq 'X-Men'
     end
