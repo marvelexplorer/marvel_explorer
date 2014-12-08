@@ -53,6 +53,8 @@ module MarvelExplorer
     def perform
       @me = Explorer.new
       @me.update
+      @me.ranking -c 96
+      @me.ranking -c 672
       @me.publish
       @me.tweet
     end
