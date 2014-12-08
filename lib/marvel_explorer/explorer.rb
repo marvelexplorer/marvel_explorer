@@ -179,12 +179,13 @@ module MarvelExplorer
       .each { |c| counts[c] += 1 }
 
       counts.sort_by { |k, v| v }.reverse
-      .map { |k, v| { name: k, score: v } }[0...params[:limit]]
+      .map { |k, v| { 'name' => k, 'score' => v } }[0...params[:limit]]
     end
 
-    def record_rankings params
-      y = File.open '%s/_data/rankings.yml' % [
+    def record_rankings params = {}
+      y = File.open '%s/_data/rankings_%d.yml' % [
         @config['jekyll_dir'],
+        params[:commits],
       ], 'w'
 
       y.write ranking(params).to_yaml
