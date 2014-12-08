@@ -168,33 +168,27 @@ module MarvelExplorer
     end
 
     def ranking params
-      params = { commits: 1000, repo: @config['jekyll_dir'], limit: 5 }.merge params
+      params = { commits: 35040, repo: @config['jekyll_dir'], limit: 5 }.merge params
       g = Git.open params[:repo]
-      useful_commits = g.log(params[:commits]).select { |c| c.message =~ /\->/ }
-      useful_commits.map! { |c| c.message }
-      characters = useful_commits.map do |ch|
-        ch =~ /(.*) -> (.*) -> (.*)/
-        $1
-      end
 
-      counts = {}
-      characters.each do |ch|
-        begin
-          counts[ch] += 1
-        rescue NoMethodError
-          counts[ch] = 1
-        end
-      end
-      ranks = counts.sort_by { |k, v| v }
-      c = 0
-      results = []
-      ranks.reverse.each do |pair|
-        results.push pair
-        c += 1
-        break if c == params[:limit]
-      end
+      counts = Hash.new(0)
 
-      results
+      g.log(params[:commits])
+      .select{ |c| c.message =~ /\->/ }
+      .map { |c| /(.*) -> (.*) -> (.*)/.match(c.message)[1] }
+      .each { |c| counts[c] += 1 }
+
+      counts.sort_by { |k, v| v }.reverse
+      .map { |k, v| { name: k, score: v } }[0...params[:limit]]
+    end
+
+    def record_rankings params
+      y = File.open '%s/_data/rankings.yml' % [
+        @config['jekyll_dir'],
+      ], 'w'
+
+      y.write ranking(params).to_yaml
+      y.close
     end
   end
 
