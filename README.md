@@ -44,4 +44,4 @@ Calculates most-featured-characters data, writes YAML for Jekyll site
 
     marvel_explorer perform
 
-All three of the above tasks
+All four of the above tasks
