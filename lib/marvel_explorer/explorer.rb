@@ -112,12 +112,11 @@ module MarvelExplorer
     end
 
     def tweet_message
-      tm = 'In %s, %s appeared in %s of the %s run of %s with %s' % [
+      tm = 'In %s, %s appeared in %s #%s with %s' % [
         yamls['comic']['year'],
         yamls['start']['name'],
-        'issue #%s' % yamls['comic']['issue'],
-        yamls['comic']['series']['period'],
         yamls['comic']['series']['name'],
+        yamls['comic']['issue'],
         yamls['end']['name']
       ]
 
