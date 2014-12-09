@@ -20,7 +20,7 @@ module MarvelExplorer
           'image' => eval("#{c}_character[:thumbnail]")
         }
 
-        y.write h, c
+        write_yaml h, c
       end
     end
 

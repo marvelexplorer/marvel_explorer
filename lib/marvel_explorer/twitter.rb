@@ -25,9 +25,5 @@ module MarvelExplorer
 
       tm
     end
-
-    def tweet
-      twitter_client.update tweet_message
-    end
   end
 end
