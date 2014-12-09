@@ -6,7 +6,7 @@ module MarvelExplorer
       end
     end
 
-    def yamlise
+    def yamlise_characters
       FileUtils.mkdir_p '%s/_data' % @config['jekyll_dir']
 
       [
@@ -20,14 +20,11 @@ module MarvelExplorer
           'image' => eval("#{c}_character[:thumbnail]")
         }
 
-        y = File.open '%s/_data/%s.yml' % [
-          @config['jekyll_dir'],
-          c
-        ], 'w'
-        y.write h.to_yaml
-        y.close
+        y.write h, c
       end
+    end
 
+    def yamlise_comic
       s = MarvelExplorer.series(comic[:title])
 
       h = {
@@ -43,9 +40,22 @@ module MarvelExplorer
         'image' => comic[:thumbnail]
       }
 
-      y = File.open '%s/_data/comic.yml' % @config['jekyll_dir'], 'w'
+      write_yaml h, 'comic'
+    end
+
+    def write_yaml h, path
+      y = File.open '%s/_data/%s.yml' % [
+        @config['jekyll_dir'],
+        path
+      ], 'w'
       y.write h.to_yaml
       y.close
+    end
+
+    def yamlise
+      %w{ comic characters }.each do |item|
+        eval "yamlise_#{item}"
+      end
     end
 
     def yamls
