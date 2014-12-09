@@ -1,14 +1,6 @@
 module MarvelExplorer
   class Explorer
-    def save
-      File.open @config['marshal_file'], 'w' do |file|
-        Marshal.dump end_character, file
-      end
-    end
-
     def yamlise_characters
-      FileUtils.mkdir_p '%s/_data' % @config['jekyll_dir']
-
       [
         'start',
         'end'
@@ -25,16 +17,14 @@ module MarvelExplorer
     end
 
     def yamlise_comic
-      s = MarvelExplorer.series(comic[:title])
-
       h = {
         'date' => comic[:dates][0]['date'],
         'year' => Date.parse(comic[:dates][0]['date']).strftime('%Y'),
         'title' => comic[:title],
         'issue' => comic[:issueNumber],
         'series' => {
-          'period' => s[:period],
-          'name' => s[:name]
+          'period' => series[:period],
+          'name' => series[:name]
         },
         'url' => comic[:urls][0]['url'],
         'image' => comic[:thumbnail]
@@ -53,6 +43,7 @@ module MarvelExplorer
     end
 
     def yamlise
+      FileUtils.mkdir_p '%s/_data' % @config['jekyll_dir']
       %w{ comic characters }.each do |item|
         eval "yamlise_#{item}"
       end
@@ -61,7 +52,7 @@ module MarvelExplorer
     def yamls
       @yamls ||= begin
         yamls = {}
-        %w{start end comic}.each do |thing|
+        %w{ start end comic }.each do |thing|
           y = YAML.load File.open '%s/_data/%s.yml' % [
             @config['jekyll_dir'],
             thing

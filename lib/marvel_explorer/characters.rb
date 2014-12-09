@@ -24,5 +24,11 @@ module MarvelExplorer
         end_character
       end
     end
+
+    def save
+      File.open @config['marshal_file'], 'w' do |file|
+        Marshal.dump end_character, file
+      end
+    end
   end
 end
