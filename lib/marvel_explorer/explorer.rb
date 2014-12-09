@@ -6,7 +6,16 @@ module MarvelExplorer
       @config = YAML.load(File.open(File.join(File.dirname(__FILE__), '..', '..', 'config/defaults.yml')))
       @config.merge! YAML.load File.open config_file
     end
-    
+
+    def update
+      yamlise
+      save
+    end
+
+    def tweet
+      twitter_client.update tweet_message
+    end
+
     def publish
       commit
     end
