@@ -30,10 +30,10 @@ module MarvelExplorer
         Marshal.dump end_character, file
       end
 
-    #  FileUtils.mkdir_p @config['cache_dir']
-    #  File.open '%s/%d' % [ @config['cache_dir'], end_character[:id] ], 'w' do |file|
-    #    Marshal.dump end_character, file
-    #  end
+      FileUtils.mkdir_p @config['cache_dir']
+      File.open '%s/%d' % [ @config['cache_dir'], end_character[:id] ], 'w' do |file|
+        Marshal.dump end_character, file
+      end
     end
   end
 end

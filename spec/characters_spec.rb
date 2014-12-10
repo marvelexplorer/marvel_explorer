@@ -46,7 +46,7 @@ module MarvelExplorer
       f = Marshal.load File.read @me.config['marshal_file']
       expect(f.name).to eq 'Avengers'
 
-    #  expect(File).to exist 'tmp/cached_characters/1009165'
+      expect(File).to exist 'tmp/cached_characters/1009165'
     end
   end
 end
