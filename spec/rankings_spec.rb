@@ -3,7 +3,9 @@ require 'spec_helper'
 module MarvelExplorer
   describe Explorer do
     before :each do
+      FileUtils.rm_rf 'tmp/'
       @me = Explorer.new 'config.yml'
+      @me.config['marshal_file'] = '/dev/null'
 
       @repopath = 'tmp/marvelexplorer'
       unless File.exists? '%s/index.html' % @repopath

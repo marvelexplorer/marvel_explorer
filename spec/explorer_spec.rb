@@ -4,6 +4,7 @@ module MarvelExplorer
   describe Explorer do
     before :each do
       Timecop.freeze '2014-12-03T19:01:00+00:00'
+      FileUtils.rm_rf 'tmp/'
       @me = Explorer.new 'config.yml'
     end
 
