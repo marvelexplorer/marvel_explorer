@@ -16,6 +16,7 @@ module MarvelExplorer
     end
 
     def rankings params = {}
+      FileUtils.mkdir_p '%s/_data/' % @config['jekyll_dir']
       y = File.open '%s/_data/rankings_%d.yml' % [
         @config['jekyll_dir'],
         params[:commits],

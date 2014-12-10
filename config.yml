@@ -7,4 +7,5 @@ twitter:
     secret:    eAb86Ig4AuG7G1uUQqPyCGFaxlZ7qVacOA7Py9LoHqr7k
 
 marshal_file: spec/fixtures/last.character
-jekyll_dir: 'tmp/'
+#cache_dir:    'tmp/cached_characters/'
+jekyll_dir:   'tmp/'

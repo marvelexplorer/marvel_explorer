@@ -34,6 +34,7 @@ module MarvelExplorer
     end
 
     def write_yaml h, path
+      FileUtils.mkdir_p '%s/_data/' % @config['jekyll_dir']
       y = File.open '%s/_data/%s.yml' % [
         @config['jekyll_dir'],
         path
@@ -53,10 +54,19 @@ module MarvelExplorer
       @yamls ||= begin
         yamls = {}
         %w{ start end comic }.each do |thing|
-          y = YAML.load File.open '%s/_data/%s.yml' % [
-            @config['jekyll_dir'],
-            thing
-          ]
+          begin
+            file = File.open '%s/_data/%s.yml' % [
+              @config['jekyll_dir'],
+              thing
+            ]
+          rescue Exception
+            update
+            file = File.open '%s/_data/%s.yml' % [
+              @config['jekyll_dir'],
+              thing
+            ]
+          end
+          y = YAML.load file
           yamls[thing] = y
         end
         yamls
