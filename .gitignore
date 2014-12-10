@@ -13,4 +13,4 @@
 *.a
 mkmf.log
 .env*
-config.yml
+config-dev.yml
