@@ -20,7 +20,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'ultron', '~> 0.2'
   spec.add_dependency 'twitter', '~> 5.13'
-  spec.add_dependency 'dotenv', '~> 1.0'
   spec.add_dependency 'git', '~> 1.2'
   spec.add_dependency 'thor', '~> 0.19m '
 
