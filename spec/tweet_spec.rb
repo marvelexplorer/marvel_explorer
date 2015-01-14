@@ -18,7 +18,7 @@ module MarvelExplorer
       .to_return(status: 200, body: File.read('spec/fixtures/hulk_comics.json'))
       stub_request(:get, /gateway.marvel.com\/v1\/public\/comics\/19843\/characters/)
       .to_return(status: 200, body: File.read('spec/fixtures/double-shot-characters.json'))
-      expect(@me.tweet_message).to eq 'In 2003, Hulk appeared in Marvel Double Shot #2 with Avengers'
+      expect(@me.tweet_message).to eq 'In 2003, Hulk appeared in Marvel Double Shot #2 with Avengers http://marvelexplorer.github.io'
     end
   end
 end

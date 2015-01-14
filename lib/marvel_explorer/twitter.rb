@@ -11,12 +11,13 @@ module MarvelExplorer
     end
 
     def tweet_message
-      tm = 'In %s, %s appeared in %s #%s with %s' % [
+      tm = 'In %s, %s appeared in %s #%s with %s %s' % [
         yamls['comic']['year'],
         yamls['start']['name'],
         yamls['comic']['series']['name'],
         yamls['comic']['issue'],
-        yamls['end']['name']
+        yamls['end']['name'],
+        @config['marvelexplorer_url']
       ]
 
       if tm.length > @config['tweet_length'].to_i
